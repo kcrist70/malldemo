@@ -25,7 +25,8 @@
         this.$bus.$emit('itemImageLoad')
       },
       itemclick: function () {
-        console.log('tiaozhuan');
+        this.$router.push('/detail/' + this.goodsItem.iid);
+        // this.$router.push({path:'/detail',query:{"id":''}})
       }
     }
   }

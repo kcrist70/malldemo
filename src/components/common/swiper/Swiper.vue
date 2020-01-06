@@ -113,8 +113,10 @@
         if (this.distance === 0) {
           return
         } else if (this.distance > 0 && currentMove > this.totalWidth * this.moveRatio) {
+          this.distance = 0;
           this.currentIndex--;
         } else if (this.distance < 0 && currentMove > this.totalWidth * this.moveRatio) {
+          this.distance = 0;
           this.currentIndex++;
         }
         this.scrollContent(-this.currentIndex * this.totalWidth);
