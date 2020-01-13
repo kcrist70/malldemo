@@ -1,6 +1,14 @@
 <template>
     <div class="wrapper">
       <div class="content">
+        <div v-for="(item,index) in [10,9,8,7,6,5,4,3,2,1]">
+          "第一组："{{item}},{{index}}
+          <div>"1，2组之间"{{item}},{{index}}</div>
+          <div v-for="(item,index) in item">"第二组："{{item}},{{index}}</div>
+        </div>
+
+
+
         <button @click="btnclick">button</button>
         <ul>
           <li>分类列表1</li>
@@ -105,7 +113,6 @@
           <li>分类列表100</li>
         </ul>
       </div>
-
     </div>
 
 </template>

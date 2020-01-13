@@ -27,10 +27,10 @@
 
   import TabControl from 'components/content/tabControl/TabControl';
   import GoodsList from 'components/content/goods/GoodsList'
-  import BackTop from 'components/content/backTop/BackTop'
 
   import {getHomeMultidata, getHomeData} from "network/home";
-  import {debounce} from "common/utils";
+  import {itemListenerMixin,backTopMixin} from "common/mixin";
+  import {BACKTOP_DISTANCE} from 'common/const'
 
   export default {
     name: "Home",
@@ -42,9 +42,8 @@
       Scroll,
       TabControl,
       GoodsList,
-      BackTop,
-
     },
+    mixins: [itemListenerMixin,backTopMixin],
     data() {
       return {
         banners: [],
@@ -91,10 +90,10 @@
           }
         },
         currentType: 'pop',
-        isShowBackTop: false,
         tabOffsetTop: null,
         isTabFixed: false,
-        saveY: 0
+        saveY: 0,
+
       }
     },
     computed: {
@@ -142,11 +141,8 @@
         this.$refs.tabcontrol2.currentIndex = index;
         this.$refs.tabcontrol1.currentIndex = index
       },
-      backclick() {
-        this.$refs.scroll.scrollTo(0, 0)
-      },
       contentScroll: function (position) {
-        this.isShowBackTop = position.y < -1000;
+        this.isShowBackTop = -position.y > BACKTOP_DISTANCE;
         this.isTabFixed = (-position.y) > this.tabOffsetTop
       },
       loadMore: function () {
@@ -160,18 +156,14 @@
       }
     },
     mounted() {
-      const refresh = debounce(this.$refs.scroll.refresh, 500);
-      this.$bus.$on('itemImageLoad', () => {
-        refresh()
-      });
     },
     activated() {
-      this.$refs.scroll.refresh()
+      this.$refs.scroll.refresh();
       this.$refs.scroll.scrollTo(0, this.saveY, 0);
-
     },
     deactivated() {
       this.saveY = this.$refs.scroll.getScrollY();
+      this.$bus.$off('itemImgLoad',this.itemImgListener)
       // console.log(this.saveY);
     }
   }

@@ -1,9 +1,9 @@
 <template>
   <div class="goods-item" @click="itemclick">
-    <img :src="goodsItem.show.img" alt="" @load="imageLoad">
+    <img :src="showImage" alt="" @load="imageLoad" :key="showImage">
     <div class="goods-info">
       <p >{{goodsItem.title}}</p>
-      <span class="price">{{goodsItem.price}}</span>
+      <span class="price">¥{{goodsItem.price}}</span>
       <span class="collect">{{goodsItem.cfav}}</span>
     </div>
   </div>
@@ -26,7 +26,13 @@
       },
       itemclick: function () {
         this.$router.push('/detail/' + this.goodsItem.iid);
-        // this.$router.push({path:'/detail',query:{"id":''}})
+        // const iid = this.goodsItem.iid;
+        // this.$router.push({path:'/detail',query:{iid}})
+      }
+    },
+    computed: {
+      showImage() {
+        return this.goodsItem.image || this.goodsItem.show.img
       }
     }
   }
